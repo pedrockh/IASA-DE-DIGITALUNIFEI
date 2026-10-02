@@ -1,4 +1,4 @@
-nteligência Artificial Confiável e Segura Aplicada à Saúde Digital
+Inteligência Artificial Confiável e Segura Aplicada à Saúde Digital
 
 Universidade Federal de Itajubá (UNIFEI) — Campus Pouso Alegre
 
