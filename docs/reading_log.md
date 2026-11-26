@@ -4,7 +4,7 @@
 **Orientação:** Prof. Dr. Rafael Sanchotene Silva  
 **Projeto:** Seleção de Atributos e Classificação em ECG via Algoritmo Quantum Snowflake (QSA)  
 **Entregável:** Semana 2 — Matriz de Literatura e Diário de Leitura Crítica  
-**Norma de Formatação:** ABNT NBR 14724 / NBR 6023 (Monocromático, Texto em Preto)  
+
 
 ---
 
@@ -42,7 +42,10 @@ A literatura selecionada contempla abordagens complementares que cobrem desde a 
 * **Objetivo Geral:** Desenvolver um kernel quântico leve, estável e diretamente interpretável para classificação de batimentos cardíacos e detecção de anomalias sem a complexidade estrutural de redes profundas.
 * **Formulação do Kernel QADK:** O kernel combina dois termos com significado fisiológico direto:
   $$\mathcal{K}_Q(x, y) = lpha \cdot \mathcal{F}(x, y) + eta \cdot \mathcal{D}(x, y)$$
-  Onde $\mathcal{F}(x, y) = |\langle \phi(x) | \phi(y) angle|^2$ representa a *fidelidade angular* (alinhamento no Espaço de Hilbert obtido via *swap-tests*) e $\mathcal{D}(x, y) = |\langle \phi(x)|\phi_0angle - \langle \phi(y)|\phi_0angle|^2$ mede a *distância relativa em relação a uma referência de saúde* ($\phi_0$, derivada da mediana de batimentos normais).
+  Onde $\mathcal{F}(x, y) = |\langle \phi(x) | \phi(y) 
+angle|^2$ representa a *fidelidade angular* (alinhamento no Espaço de Hilbert obtido via *swap-tests*) e $\mathcal{D}(x, y) = |\langle \phi(x)|\phi_0
+angle - \langle \phi(y)|\phi_0
+angle|^2$ mede a *distância relativa em relação a uma referência de saúde* ($\phi_0$, derivada da mediana de batimentos normais).
 * **Resultados e Desempenho:** Na base PTB Diagnostic ECG Database sob 100 validações de Monte-Carlo com separação estrita por paciente (*patient-wise split*), o QADK-SVM obteve **97,74% de AUC-ROC, 93,69% de acurácia e 92,30% de F1-macro**, superando o SVM linear (+3,70 pp) e aproximando-se do desempenho de CNNs profundas (diferença < 1,7 pp) com apenas 11 qubits simulados. Em detecção de anomalias (*One-Class SVM*), atingiu AUC de 88,4%.
 * **Limitações:** A construção da matriz de Gram apresenta complexidade computacional $\Theta(n^2)$, exigindo elevado tempo de cálculo clássico para grandes volumes de dados. Apresentou baixo desempenho em agrupamento não supervisionado (ARI $\le 0,0711$), demonstrando ser estritamente discriminativo.
 
