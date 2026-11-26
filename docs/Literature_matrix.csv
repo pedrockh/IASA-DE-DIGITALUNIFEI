@@ -1,0 +1,5 @@
+Referencia,Metodo Principal,Categoria,Base de Dados,Resultado Chave,Papel no Projeto
+Oralhan & Oralhan (2025),QSA (Quantum Snowflake Algorithm),Otimização Metaheurística,Benchmarks & TSP-200,Alta diversidade populacional e rápida convergência,Algoritmo base para seleção de atributos no ECG
+Wu et al. (2026),QSVC (Quantum Support Vector Classifier),Classificador Híbrido Quântico,MIT-BIH,97.7% Acurácia / 99.4% ROC-AUC,Modelo quântico supervisionado para classificação de arritmia
+Salehi et al. (2026),QADK-SVM (Quantum Angle-Distance Kernel),Kernel Inspirado em Quântica,MIT-BIH (split por paciente),97.74% ROC-AUC / 93.69% Acurácia,Kernel leve e explicável para detecção de anomalias com poucos dados
+Al-Shamasneh et al. (2026),QECNN + Quantum Blockchain,Rede Convolucional Quântica + Segurança,MIT-BIH e PTB-XL,98.1% Acurácia (PTB-XL) / 97.2% (MIT-BIH),Arquitetura híbrida integrada à segurança de dados médicos em MIoT
