@@ -66,9 +66,9 @@ A correta condução da pesquisa exige evitar a equalização genérica entre te
 
 | Algoritmo / Estudo | Classe de Método | Mecanismo Quântico / Inspirado | Papel na Análise de ECG | Foco Principal |
 | :--- | :--- | :--- | :--- | :--- |
-| **QSA** (Oralhan & Oralhan, 2025) | Otimização Metaheurística | Tunelamento quântico ($\sigma(t)$), repulsão contínua e superposição de soluções | Seleção de atributos (geração de máscara binária de características) | Eficiência em busca e fuga de mínimos locais |
+| **QSA** (Oralhan & Oralhan, 2025) | Otimização Metaheurística | Tunelamento quântico, repulsão contínua e superposição de soluções | Seleção de atributos (geração de máscara binária de características) | Eficiência em busca e fuga de mínimos locais |
 | **QSVC / QNN** (Wu et al., 2026) | Classificador Híbrido Quântico-Clássico | Mapeamento de características (*ZFeatureMap*), estados em Hilbert e otimização por variacional | Classificação binária de arritmias em imagens/vetores de ECG | Explicabilidade local por protótipos e suporte web |
-| **QADK-SVM** (Salehi et al., 2026) | Kernel Quântico Discriminativo | Fidelidade angular ($F$) e distância à referência mediana de saúde ($D$) via *swap-tests* | Classificação de batimentos e detecção de anomalias (*One-Class*) | Representação geométrica leve e transparência matemática |
+| **QADK-SVM** (Salehi et al., 2026) | Kernel Quântico Discriminativo | Fidelidade angular  e distância à referência mediana de saúde ($D$) via *swap-tests* | Classificação de batimentos e detecção de anomalias (*One-Class*) | Representação geométrica leve e transparência matemática |
 | **QECNN + QBC** (Al-Shamasneh et al., 2026) | Rede Convolucional Quântica + Blockchain | Kernels convolucionais PQC, *quantum walks* e emaranhamento por pares de Bell | Classificação robusta e transmissão/armazenamento imutável | Segurança cibernética em MIoT e aumento por QGAN |
 
 ---
@@ -101,7 +101,7 @@ A revisão sistemática conduzida na Semana 2 demonstra que a introdução de co
 
 ---
 
-## 6. REFERÊNCIAS BIBLIOGRÁFICAS (ABNT NBR 6023)
+## 6. REFERÊNCIAS BIBLIOGRÁFICAS
 
 AL-SHAMASNEH, Ala’a R.; KARIM, Faten Khalid; WANG, Yu. Quantum-enhanced ECG analysis for reliable and secure arrhythmia detection in medical IoT systems. **Journal of Cloud Computing**, v. 15, n. 90, p. 1-30, 2026. DOI: 10.1186/s13677-026-00918-1.
 
