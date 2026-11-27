@@ -4,7 +4,7 @@
 **Orientação:** Prof. Dr. Rafael Sanchotene Silva  
 **Projeto:** Seleção de Atributos e Classificação em ECG via Algoritmo Quantum Snowflake (QSA)  
 **Entregável:** Semana 2 — Matriz de Literatura e Diário de Leitura Crítica  
-**Norma de Formatação:** ABNT NBR 14724 / NBR 6023 (Monocromático, Texto em Preto)  
+
 
 ---
 
@@ -42,7 +42,10 @@ A literatura selecionada contempla abordagens complementares que cobrem desde a 
 * **Objetivo Geral:** Desenvolver um kernel quântico leve, estável e diretamente interpretável para classificação de batimentos cardíacos e detecção de anomalias sem a complexidade estrutural de redes profundas.
 * **Formulação do Kernel QADK:** O kernel combina dois termos com significado fisiológico direto:
   $$\mathcal{K}_Q(x, y) = lpha \cdot \mathcal{F}(x, y) + eta \cdot \mathcal{D}(x, y)$$
-  Onde $\mathcal{F}(x, y) = |\langle \phi(x) | \phi(y) angle|^2$ representa a *fidelidade angular* (alinhamento no Espaço de Hilbert obtido via *swap-tests*) e $\mathcal{D}(x, y) = |\langle \phi(x)|\phi_0angle - \langle \phi(y)|\phi_0angle|^2$ mede a *distância relativa em relação a uma referência de saúde* ($\phi_0$, derivada da mediana de batimentos normais).
+  Onde $\mathcal{F}(x, y) = |\langle \phi(x) | \phi(y) 
+angle|^2$ representa a *fidelidade angular* (alinhamento no Espaço de Hilbert obtido via *swap-tests*) e $\mathcal{D}(x, y) = |\langle \phi(x)|\phi_0
+angle - \langle \phi(y)|\phi_0
+angle|^2$ mede a *distância relativa em relação a uma referência de saúde* ($\phi_0$, derivada da mediana de batimentos normais).
 * **Resultados e Desempenho:** Na base PTB Diagnostic ECG Database sob 100 validações de Monte-Carlo com separação estrita por paciente (*patient-wise split*), o QADK-SVM obteve **97,74% de AUC-ROC, 93,69% de acurácia e 92,30% de F1-macro**, superando o SVM linear (+3,70 pp) e aproximando-se do desempenho de CNNs profundas (diferença < 1,7 pp) com apenas 11 qubits simulados. Em detecção de anomalias (*One-Class SVM*), atingiu AUC de 88,4%.
 * **Limitações:** A construção da matriz de Gram apresenta complexidade computacional $\Theta(n^2)$, exigindo elevado tempo de cálculo clássico para grandes volumes de dados. Apresentou baixo desempenho em agrupamento não supervisionado (ARI $\le 0,0711$), demonstrando ser estritamente discriminativo.
 
@@ -63,9 +66,9 @@ A correta condução da pesquisa exige evitar a equalização genérica entre te
 
 | Algoritmo / Estudo | Classe de Método | Mecanismo Quântico / Inspirado | Papel na Análise de ECG | Foco Principal |
 | :--- | :--- | :--- | :--- | :--- |
-| **QSA** (Oralhan & Oralhan, 2025) | Otimização Metaheurística | Tunelamento quântico ($\sigma(t)$), repulsão contínua e superposição de soluções | Seleção de atributos (geração de máscara binária de características) | Eficiência em busca e fuga de mínimos locais |
+| **QSA** (Oralhan & Oralhan, 2025) | Otimização Metaheurística | Tunelamento quântico, repulsão contínua e superposição de soluções | Seleção de atributos (geração de máscara binária de características) | Eficiência em busca e fuga de mínimos locais |
 | **QSVC / QNN** (Wu et al., 2026) | Classificador Híbrido Quântico-Clássico | Mapeamento de características (*ZFeatureMap*), estados em Hilbert e otimização por variacional | Classificação binária de arritmias em imagens/vetores de ECG | Explicabilidade local por protótipos e suporte web |
-| **QADK-SVM** (Salehi et al., 2026) | Kernel Quântico Discriminativo | Fidelidade angular ($F$) e distância à referência mediana de saúde ($D$) via *swap-tests* | Classificação de batimentos e detecção de anomalias (*One-Class*) | Representação geométrica leve e transparência matemática |
+| **QADK-SVM** (Salehi et al., 2026) | Kernel Quântico Discriminativo | Fidelidade angular  e distância à referência mediana de saúde ($D$) via *swap-tests* | Classificação de batimentos e detecção de anomalias (*One-Class*) | Representação geométrica leve e transparência matemática |
 | **QECNN + QBC** (Al-Shamasneh et al., 2026) | Rede Convolucional Quântica + Blockchain | Kernels convolucionais PQC, *quantum walks* e emaranhamento por pares de Bell | Classificação robusta e transmissão/armazenamento imutável | Segurança cibernética em MIoT e aumento por QGAN |
 
 ---
@@ -98,7 +101,7 @@ A revisão sistemática conduzida na Semana 2 demonstra que a introdução de co
 
 ---
 
-## 6. REFERÊNCIAS BIBLIOGRÁFICAS (ABNT NBR 6023)
+## 6. REFERÊNCIAS BIBLIOGRÁFICAS
 
 AL-SHAMASNEH, Ala’a R.; KARIM, Faten Khalid; WANG, Yu. Quantum-enhanced ECG analysis for reliable and secure arrhythmia detection in medical IoT systems. **Journal of Cloud Computing**, v. 15, n. 90, p. 1-30, 2026. DOI: 10.1186/s13677-026-00918-1.
 
