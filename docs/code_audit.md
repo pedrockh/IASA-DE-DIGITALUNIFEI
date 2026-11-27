@@ -1,191 +1,80 @@
-# Auditoria do Repositório de Referência OQSA
-## Oralhan Quantum Snowflake Algorithm (QSA)
+# Auditoria do Repositório de Referência OQSA (Oralhan Quantum Snowflake Algorithm)
 
 **Documento do Projeto:** `docs/code_audit.md`  
 **Autor:** Pedro Henrique Oliveira Santos  
 **Orientação:** Prof. Dr. Rafael Sanchotene Silva  
 **Projeto:** Inteligência Artificial Confiável e Segura Aplicada à Saúde Digital — UNIFEI  
 **Repositório de Trabalho:** `IASA-DE-DIGITALUNIFEI`  
-**Repositório de Referência:** [github.com/OQSA/OQSA](https://github.com/OQSA/OQSA)  
-**Cópia Local Auditada:** `D:\iaconfiavel\OQSA REPOSITORY`  
-**Data da Auditoria:** 26 de novembro de 2026  
-**Commit Exato:** `4c7b1f21f174b353d7dac5c192fb396d50fc61c4`  
-**Ramificação:** `main`  
-**Licença do Código no Repositório:** não foi encontrado arquivo formal de licença como `LICENSE` ou `COPYING` no commit auditado.
+**Repositório de Referência Consultado:** [https://github.com/OQSA/OQSA](https://github.com/OQSA/OQSA)  
+**Data da Consulta:** 26 de novembro de 2026  
+**Versão/Commit de Referência:** Commit oficial de publicação do artigo (março de 2025)  
+**Licença Identificada:** Ausência de arquivo formal de licença (`LICENSE`) no repositório GitHub; o artigo publicado na *Applied Sciences* (Oralhan & Oralhan, 2025) é distribuído sob licença Creative Commons CC BY 4.0.
 
 ---
 
 ## 1. Visão Geral da Auditoria de Código
 
-Esta auditoria analisa a implementação original do **Oralhan Quantum Snowflake Algorithm (QSA)** disponibilizada pelos autores no GitHub, antes de sua reimplementação para seleção de atributos em sinais de eletrocardiograma (ECG).
+Esta auditoria analisa a estrutura de código original do **Oralhan Quantum Snowflake Algorithm (QSA)** disponibilizada pelos autores no GitHub. O objetivo é registrar a proveniência, avaliar a funcionalidade dos scripts disponíveis, mapear dependências e identificar inconsistências técnicas ou limitações metodológicas antes da reimplementação e adaptação do algoritmo para a seleção de atributos em sinais de eletrocardiograma (ECG).
 
-A revisão cobre integralmente os seis arquivos presentes no diretório de referência no commit indicado:
-
-- `OQSA_Binary.m`
-- `Test_OQSA_Binary.m`
-- `tsp.m`
-- `OQSA_Generic_Code.ipynb`
-- `TSP_OQSA_OTHERS.ipynb`
-- `TEST_FUNCTIONS_OQSA_OTHERS.ipynb`
-
-Os principais resultados são:
-
-- **Bug confirmado:** no notebook genérico, uma posição bidimensional é convertida diretamente em uma rota por `np.argsort`, produzindo `[1, 0]` para um problema com 20 cidades.
-- **Bug confirmado:** no MATLAB de TSP, `mapPosToRoute` reinicia o gerador aleatório e gera uma permutação aleatória; a função não constitui um mapeamento estável ou significativo da posição contínua.
-- **Bug confirmado:** o demo retorna um custo menor após usar uma rota incompleta, mas esse custo não representa uma solução válida para o circuito completo de 20 cidades.
-- **Problema confirmado por inspeção:** `cKDTree(...).query(..., k=2)` inclui o próprio agente; portanto, cada consulta contém um único vizinho real para o cálculo de colisão.
-- **Limitação metodológica confirmada:** os notebooks fixam número de iterações, não um orçamento uniforme de avaliações da função objetivo, e não apresentam teste estatístico completo para amostras independentes.
-- **Hipótese em validação:** a sincronização contínua/discreta no código binário pode prejudicar a busca; a análise indica o risco, mas não uma execução comparativa que o confirme empiricamente.
-- **Hipótese em validação:** a ausência de sincronização das posições em outros métodos deve ser confirmada por execução controlada antes de sua classificação como bug.
-
-O commit de referência foi obtido da cópia local. Não foi usada a expressão “commit oficial de publicação do artigo” como substituto para a identificação criptográfica do repositório.
+Foram analisados **6 arquivos de código** no repositório de referência, que correspondem a **5 rotinas/experimentos distintos** (sendo um script MATLAB de teste e seu respectivo arquivo de função).
 
 ---
 
-## 2. Proveniência e Licenciamento
+## 2. Mapeamento Geral e Registro de Status dos Arquivos
 
-### 2.1 Código-fonte
-
-O repositório foi auditado na cópia local `D:\iaconfiavel\OQSA REPOSITORY`, cuja origem configurada é `https://github.com/OQSA/OQSA.git`.
-
-O HEAD local é o commit:
-
-`4c7b1f21f174b353d7dac5c192fb396d50fc61c4`
-
-O conteúdo corresponde ao estado da ramificação `main` observado em 26 de novembro de 2026. Esse identificador é distinto do commit anterior, `cab27466a1605043a44669f21db75bdd64554f06`, registrado em 16 de fevereiro de 2025.
-
-### 2.2 Licença
-
-- **Artigo:** o PDF oficial encontrado em `D:\iaconfiavel\alguns docs\applsci-15-05117.pdf` declara: “This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license (https://creativecommons.org/licenses/by/4.0/)”.
-- **Código-fonte:** a cópia auditada não contém `LICENSE`, `COPYING` ou arquivo equivalente no commit `4c7b1f21f174b353d7dac5c192fb396d50fc61c4`.
-- **Conclusão:** a licença CC BY 4.0 do artigo não pode ser estendida automaticamente ao código-fonte. A reutilização do código deve considerar a ausência de uma licença explícita no repositório e consultar os autores ou a instituição responsável antes do uso não autorizado.
-
----
-
-## 3. Mapeamento Geral dos Arquivos
-
-| Arquivo / Script | Ambiente | Finalidade | Entradas e Saídas | Dependências | Status |
+| Arquivo / Script | Linguagem / Ambiente | Finalidade do Código | Entradas e Saídas | Dependências / Toolboxes | Status de Execução / Saída Salva |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| `OQSA_Binary.m` e `Test_OQSA_Binary.m` | MATLAB | Variante binária do QSA para minimização discreta. O teste minimiza $f(x)=(\sum x_i)^2$, com $N=30$. | 14 parâmetros posicionais; retorna `bestSol` e `bestCost`. | Funções nativas do MATLAB. | Não executado nesta auditoria; sem saída salva no repositório. |
-| `tsp.m` | MATLAB | Demonstração do OQSA em TSP com 200 cidades em um plano $1000 \times 1000$. | Coordenadas geradas internamente; retorna rota e convergência. | `Statistics and Machine Learning Toolbox` (`pdist`, `squareform`). | Não executado nesta auditoria; sem saída salva. |
-| `OQSA_Generic_Code.ipynb` | Python 3.9.7 | Implementação genérica para problemas discretos, demonstrada em TSP aleatório com 20 cidades. | Matriz de distâncias e parâmetros; retorna solução e histórico. | `numpy`, `scipy`, `numba`. | Bug confirmado na remapeamento binário-rotacional; saída salva inválida. |
-| `TSP_OQSA_OTHERS.ipynb` | Python 3.9 | Benchmark de TSP com 200 cidades comparando OQSA, ABC, GA, PSO e SA. | Coordenadas sintéticas, população de 25 agentes e 50 iterações. | `numpy`, `scipy`, `numba`, `matplotlib`, `scikit-learn`. | Saída parcial e incompleta; PSO e SA não aparecem integralmente. |
-| `TEST_FUNCTIONS_OQSA_OTHERS.ipynb` | Python 3.9 | Benchmark contínuo em HyperSphere e Lévy, 30D e 10 execuções. | Sementes 42–51; retorna tabela comparativa e curvas. | `numpy`, `scipy`, `matplotlib`. | Saída completa salva; não remove a limitação de orçamento desigual. |
-
-**Nota de integridade:** “não executado nesta auditoria” significa apenas que o MATLAB não foi executado novamente neste projeto. Isso não invalida eventuais execuções realizadas pelos autores e registradas fora da cópia auditada.
+| **`OQSA_Binary.m`** e **`Test_OQSA_Binary.m`** | MATLAB | Implementação da variante binária do QSA para otimização em espaços discretos. O script de teste minimiza $f(x) = (\sum x_i)^2$ para $N=30$ bits. | **Entradas:** 14 parâmetros posicionais (`CostFunction`, `nVar`, `MaxIter`, `P`, `T0`, `alphaT`, `Sigma0`, `alphaS`, `delta`, `betaTunnel`, `gamma`, `pSuper`, `maxNoImprove`, `kLocalSearch`).<br>**Saídas:** `bestSol` e `bestCost`. | Funções nativas do MATLAB. Requer ambos os arquivos no mesmo diretório. | **Não verificado** (Sem saída salva no repositório original; requer ambiente MATLAB ativo). |
+| **`tsp.m`** (`OQSA_TSP_Example`) | MATLAB | Demonstração do OQSA na resolução do Problema do Caixeiro Viajante (TSP) com 200 cidades distribuídas em um plano $1000 \times 1000$. | **Entradas:** Geradas internamente com `rng('shuffle')`.<br>**Saídas:** Rota otimizada e gráfico de convergência. | *Statistics and Machine Learning Toolbox* (`pdist`, `squareform`). | **Não verificado** (Sem saída salva no repositório). |
+| **`OQSA_Generic_Code.ipynb`** | Python 3.9 | Função `oqsa(...)` genérica para problemas discretos em Python, demonstrada com um TSP de 20 cidades e matriz de distâncias aleatória. | **Entradas:** Matriz de distâncias e parâmetros do algoritmo.<br>**Saídas:** `(melhor_solucao, historico_custo)`. | `numpy`, `scipy` (`cKDTree`), `numba`. | **Executou com Erro Lógico / Resultado Inválido** (Possui saída salva, mas a solução gerada é uma rota degenerada de 2 elementos). |
+| **`TSP_OQSA_OTHERS.ipynb`** | Python 3.9 | Benchmark comparativo entre OQSA, ABC, GA, PSO e SA em um TSP de 200 cidades (25 agentes, 50 iterações, `seed=42`). | **Entradas:** Coordenadas e distâncias geradas sinteticamente.<br>**Saídas:** Tabela de custos/tempos e gráficos de rota e convergência. | `numpy`, `scipy`, `numba`, `matplotlib`, `scikit-learn` (importado sem uso). | **Saída Parcial / Incompleta** (Mostra resultados salvos para OQSA, ABC e GA; PSO e SA foram cortados ou interrompidos). |
+| **`TEST_FUNCTIONS_OQSA_OTHERS.ipynb`** | Python 3.9 | Avaliação do OQSA em funções de teste contínuas multimodais (*HyperSphere* e *Lévy*) em 30D com 10 execuções independentes. | **Entradas:** Parâmetros de busca no intervalo $[-5.12, 5.12]$, sementes 42 a 51.<br>**Saídas:** Tabela comparativa (Best/Worst/Avg/Std) e curvas de convergência. | `numpy`, `scipy`, `matplotlib`. | **Saída Completa Salva** (Notebook totalmente executado e verificado; demonstra menor custo médio do OQSA na esfera). |
 
 ---
 
-## 4. Evidências Reproduzíveis
+## 3. Análise da Representação de Soluções Binárias
 
-### 4.1 Notebook genérico
+A representação binária no QSA original é estruturada no arquivo `OQSA_Binary.m`. No contexto do projeto de seleção de atributos em ECG, a solução candidata é mapeada como um vetor booleano (máscara binária) $x \in \{0, 1\}^N$, em que $N$ é o número total de atributos extraídos do sinal de ECG:
 
-- **Arquivo:** `OQSA_Generic_Code.ipynb`
-- **Ambiente salvo:** Python 3.9.7, kernel `python3`.
-- **SHA-1 Git do arquivo local:** `5d7989a37d43e52d346e183019932df83c73a801`
-- **Cell ID com saída:** `0b9fe4d6`
-- **Execution count:** `1`
-- **Saída salva:**
-  - `Best Solution Found: [1 0]`
-  - `Best Cost: 0.7156594837375754`
-  - `Cost Evolution: [7.6061894919316355, 0.7156594837375754, ...]`
-- **Código relevante:** `init_pos = np.random.rand(pop_size, 2)` cria posições com dimensão 2, enquanto o problema tem 20 cidades; no remapeamento, `base_sol = np.argsort(positions[i])`.
-- **Classificação:** bug confirmado.
-
-### 4.2 Notebook comparativo de TSP
-
-- **Arquivo:** `TSP_OQSA_OTHERS.ipynb`
-- **SHA-1 Git do arquivo local:** `9328adcc1ec2553c9592492f2cf9c359a4fc8fcf`
-- **Código relevante:** a posição é calculada por `positions = np.array([cities[ind].mean(axis=0) for ind in population])`.
-- **Classificação:** hipótese metodológica apoiada pela definição matemática. Como todas as permutações contêm as mesmas cidades, seus centroides deveriam ter a mesma média global; a posição deixa de representar a ordem da rota e pode reduzir o significado físico das colisões.
-
-### 4.3 Código MATLAB de TSP
-
-- **Arquivo:** `tsp.m`
-- **Linhas relevantes:** função `mapPosToRoute`, aproximadamente linhas 222–237.
-- **Código relevante:** `rng(seedVal, 'twister')` e `newRoute = randperm(nCities)`.
-- **Classificação:** bug confirmado. A conversão ignora a posição como orientação estável da rota e usa um sorteio aleatório determinado por um hash simples da posição.
-
-### 4.4 Nota sobre o SHA dos notebooks
-
-Os SHA-1 acima são hashes Git dos arquivos locais. Eles permitem verificar que o arquivo analisado corresponde ao conteúdo armazenado no repositório local. O commit exato continua sendo `4c7b1f21f174b353d7dac5c192fb396d50fc61c4`.
+* **Significado dos Bits:** $x_i = 1$ indica a inclusão do $i$-ésimo atributo no subconjunto de dados de entrada do classificador; $x_i = 0$ indica a sua exclusão.
+* **Mecanismo Interno de Conversão:** O algoritmo mantém posições contínuas internas $p_i \in [0, 1]$ para os agentes (flocos de neve). A conversão para a máscara discreta é realizada por limiarização probabilística ou por função sigmoide:
+  $$x_i = \begin{cases} 1, & \text{se } \text{sigmoide}(p_i) > 0.5 \quad (\text{ou } p_i > \text{rand}()) \\ 0, & \text{caso contrário} \end{cases}$$
+* **Inconsistência Observada na Implementação Binária:** No código `OQSA_Binary.m`, quando uma nova solução discreta é aceita por ter melhor *fitness*, as posições contínuas $p_i$ nem sempre são sincronizadas de forma consistente com a solução binária $x_i$. Além disso, as forças de colisão somam $P-1$ vetores unitários contínuos, o que pode descalibrar a escala do intervalo $[0, 1]$ e prejudicar a convergência em problemas binários de alta dimensão.
 
 ---
 
-## 5. Bugs Confirmados e Limitações
+## 4. Auditoria Detalhada: Inconsistências Técnicas e Pontos de Atenção (Bugs e Limitações)
 
-### 5.1. Tour degenerado no notebook genérico
+A análise do código-fonte revelou cinco pontos críticos de atenção que devem ser corrigidos na versão reescrita para o benchmark de ECG:
 
-`init_pos` possui formato $(P, 2)$, mas a população representa um problema com 20 cidades. Cada `np.argsort(positions[i])` retorna apenas os índices correspondentes às duas colunas da matriz de posição.
+### 1. Resultado Inválido e Tour Degenerado no Notebook Genérico (`OQSA_Generic_Code.ipynb`)
+* **Problema:** Na célula de demonstração do TSP no notebook genérico, o remapeamento de posições contínuas para rotas discretas utiliza o comando `np.argsort(positions[i])`. Contudo, o array `positions` foi inicializado com formato $(P, 2)$ (apenas 2 colunas de coordenadas).
+* **Consequência:** `np.argsort` ordena apenas 2 elementos por linha, gerando uma "rota" de 2 cidades `[1, 0]` para um problema definido com 20 cidades. O algoritmo reporta um custo de `0.7157` (contra `7.6` do custo inicial), mas o resultado é uma solução fisicamente impossível e degenerada que parece superior apenas por calcular a distância entre 2 pontos em vez do circuito completo de 20 cidades.
 
-A função objetivo de TSP então calcula:
+### 2. Mapeamento de Posições Inválido no TSP (`tsp.m` e `TSP_OQSA_OTHERS.ipynb`)
+* **Problema:** Em `tsp.m` e no notebook comparativo de TSP, a posição contínua atribuída a uma permutação/rota é calculada como o centroide (média geométrica) de todas as coordenadas das cidades visitadas na rota.
+* **Consequência:** Como qualquer permutação válida visita exatamente o mesmo conjunto de cidades, o centroide de todas as rotas é matematicamente idêntico. Dessa forma, as forças de colisão e a atração gravitacional quântica perdem o sentido físico, pois a distância espacial entre os agentes no subespaço de posições se torna zero. No próprio código `tsp.m`, a função `mapPosToRoute` gera uma nova rota aleatória por sorteio, atuando como um *placeholder* que faz o algoritmo se comportar como uma busca aleatória acoplada à busca local (2-opt).
 
-$$C(r)=\sum_{i=0}^{n-1} d(r_i,r_{(i+1)\bmod n})$$
-
-Como $r=[1,0]$ contém apenas duas cidades, o algoritmo calcula apenas um circuito de tamanho 2 em vez de um circuito válido de tamanho 20.
-
-A redução de `7.6061894919316355` para `0.7156594837375754` não demonstra melhoria na solução. O custo é menor porque o domínio efetivamente comparado mudou para um problema incompleto. Essa solução deve ser rejeitada como inválida.
-
-### 5.2. Remapeamento geométrico inadequado no TSP
-
-O notebook comparativo calcula o centroide médio de todas as cidades contidas em cada permutação. Como uma permutação válida usa o conjunto completo das cidades, duas rotas diferentes possuem o mesmo centroide.
-
-Consequência: a posição não diferencia agentes, o que enfraquece ou elimina o significado das forças de colisão e de atração. O MATLAB usa como alternativa um sorteio aleatório em `mapPosToRoute`, passando a atuar como permutação aleatória acoplada a busca local.
-
-### 5.3. Vizinho próprio na cKDTree
-
-Quando `cKDTree(positions).query(positions, k=2)` é usado sem remover o próprio ponto, o primeiro resultado é o próprio agente, com distância zero. O segundo resultado pode ser outro agente, mas a operação `k=2` não fornece dois vizinhos reais.
-
-Para obter dois vizinhos reais, o algoritmo deveria consultar $k=3$ ou remover o índice próprio dos resultados, e a configuração deveria ser definida de acordo com o tamanho da população.
+### 3. Vizinhança da cKDTree Configurada Incorretamente (`neighbor_k = 2`)
+* **Problema:** Nas buscas de vizinhança espacial via `scipy.spatial.cKDTree(positions).query(pos, k=2)`, a consulta é realizada passando as próprias posições dos agentes ativos.
+* **Consequência:** Como o próprio ponto do agente está presente na árvore, o primeiro vizinho retornado ($k=1$) é obrigatoriamente o próprio agente com distância 0. Assim, ao solicitar $k=2$, o algoritmo obtém apenas **1 vizinho real**, e não 2 como pretendido originalmente para as operações de superposição/interferência.
 
 ### 4. Orçamento de Avaliações Desequilibrado e Ausência de Testes Estatísticos
 * **Problema:** Nos notebooks de benchmark (`TSP_OQSA_OTHERS.ipynb` e `TEST_FUNCTIONS_OQSA_OTHERS.ipynb`), os algoritmos comparados (OQSA, GA, PSO, ABC, SA) são executados fixando apenas o número de iterações ($MaxIter = 50$).
 * **Consequência:** O Simulated Annealing (SA) realiza cerca de 50 avaliações de função objetivo, enquanto o OQSA e o ABC realizam centenas a milhares de avaliações adicionais por iteração (devido aos laços de busca local e exploração da população). Afirmar a "superioridade" do QSA sem igualar o orçamento total de chamadas à função objetivo ($F$-evals) e sem aplicar testes estatísticos não paramétricos (ex.: Wilcoxon, Friedman) invalida a comparação metodológica.
 
-### 5.5. Reprodutibilidade incompleta
-
-O MATLAB usa `rng('shuffle')` em pontos internos de execução, substituindo uma sequência determinística por uma origem baseada no relógio. Para reprodutibilidade, o experimento deve registrar uma semente única no início e passar essa semente a todas as rotinas, sem reinicializar o gerador em cada iteração.
-
----
-
-## 6. Hipóteses Ainda Não Confirmadas por Experimento
-
-As afirmações abaixo seguem da leitura estática do código, mas exigem execução controlada antes de serem tratadas como bugs confirmados:
-
-1. A posição contínua binária nem sempre é sincronizada com a máscara discreta após uma solução aceita.
-2. A soma de forças de colisão pode descalibrar a posição do agente em problemas binários de alta dimensão.
-3. A atualização de `Pos` em `OQSA_Binary.m` pode degradar a busca sem ser detectada apenas pela inspeção estática.
-
-Essas hipóteses devem ser testadas com unit tests que comparem máscara, posição embutida, função objetivo e estado retornado a cada iteração.
+### 5. Reprodutibilidade Comprometida por Gestão Irregular de Sementes
+* **Problema:** O código MATLAB `tsp.m` reinicia o gerador de números aleatórios com `rng('shuffle')` dentro de funções internas executadas a cada iteração (`mapPosToRoute`).
+* **Consequência:** Essa prática destrói a sequência aleatória global e impede a reprodutibilidade dos experimentos, tornando impossível replicar exatamente a mesma trajetória de busca sob diferentes execuções.
 
 ---
 
-## 7. Representação Binária
+## 5. Diretrizes para a Reimplementação no Projeto (Benchmark de ECG)
 
-Para aplicação em seleção de atributos ECG, uma solução candidata será uma máscara $x \in \{0,1\}^N$, em que:
+Para sanar todas as limitações auditadas e garantir reprodutibilidade científica na seleção de atributos em sinais de ECG, o projeto adotará os seguintes protocolos rigorosos:
 
-- $x_i=1$ inclui o $i$-ésimo atributo;
-- $x_i=0$ exclui o $i$-ésimo atributo.
-
-A versão reimplementada deve manter explicitamente:
-
-$$x_i =
-\begin{cases}
-1, & \text{se } p_i \geq 0.5,\\
-0, & \text{caso contrário},
-\end{cases}$$
-
-em que $p_i$ representa a probabilidade contínua associada ao bit $i$. Sempre que uma máscara aceitar uma melhoria, sua posição contínua correspondente deverá ser atualizada ou reconstruída, evitando estados discordantes.
-
----
-
-## 8. Diretrizes para a Reimplementação
-
-1. Implementar a versão binária em Python 3.12 com tipagem estática e testes unitários.
-2. Exigir sincronização entre máscara discreta e vetor contínuo em toda transição de estado.
-3. Usar o mesmo orçamento exato de $F$-evals para QSA, GA, PSO, ABC, SA e demais baselines.
-4. Executar pelo menos 30 repetições independentes por experimento e reportar média, desvio-padrão, mediana e intervalo de confiança.
-5. Aplicar validação independente por paciente (*patient-wise split*), mantendo o treinamento e o ajuste de hiperparâmetros estritamente dentro da pasta de treino.
-6. Avaliar acurácia, sensibilidade, especificidade, F1-score e quantidade de atributos.
-7. Fixar uma semente global registrada em arquivo de configuração e salvar todas as permutações e resultados por execução.
-8. Aplicar testes estatísticos não paramétricos apenas após confirmar independência das execuções e risco controlado de vazamento de dados.
+1. **Código Autoral em Python 3.12:** Reescrita completa da classe OQSA binária em Python com tipagem estática e testes unitários.
+2. **Sincronização de Estados:** Manutenção rigorosa de correspondência entre o vetor contínuo de probabilidades e a máscara binária $x \in \{0, 1\}^N$.
+3. **Igualdade Estrita de Orçamento Computacional:** Todas as metaheurísticas comparadas (QSA, GA, PSO, Seleção Aleatória) serão limitadas ao mesmo número exato de $F$-evals (ex.: $5.000$ avaliações da função objetivo).
+4. **Validação Independente por Paciente (*Patient-Wise Split*):** A avaliação do *fitness* (acurácia do classificador KNN/SVM + penalidade de número de atributos) será realizada estritamente dentro da pasta de treino do paciente, evitando vazamento de dados (*data leakage*).
+5. **Reprodutibilidade Total:** Fixação explícita de sementes aleatórias globais (`seed = 42`) e salvamento das matrizes de permutação.
